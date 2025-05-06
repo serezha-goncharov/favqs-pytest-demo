@@ -5,7 +5,7 @@ from api.consts import StatusCodes, Messages
 from tests.quotes.quotes_models import QuotesResponse, Quote
 from faker import Faker
 
-from utils.json import format_json
+from utils.json_helper import format_json
 
 fake = Faker()
 

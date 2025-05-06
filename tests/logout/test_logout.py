@@ -4,7 +4,7 @@ from faker import Faker
 
 from api.consts import StatusCodes, Messages
 from tests.logout.logout_models import LogoutResponse, LogoutWithoutUserTokenResponse
-from utils.json import format_json
+from utils.json_helper import format_json
 
 fake = Faker()
 

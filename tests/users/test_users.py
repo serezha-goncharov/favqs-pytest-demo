@@ -4,7 +4,7 @@ from faker import Faker
 
 from api.consts import StatusCodes, Messages
 from tests.users.user_models import GetUserResponse, GetNonExistentUserResponse, CreateUserResponse
-from utils.json import format_json
+from utils.json_helper import format_json
 
 fake = Faker()
 
