@@ -5,6 +5,7 @@ from faker import Faker
 from api.consts import StatusCodes, Messages
 from tests.logout.logout_models import LogoutResponse, LogoutWithoutUserTokenResponse
 from utils.json_helper import format_json
+from utils.validation_helper import validate_schema, validate_response_body
 
 fake = Faker()
 
@@ -22,7 +23,7 @@ class TestLogout:
         with allure.step("Status code 200"):
             assert response.status_code == StatusCodes.code_200
         with allure.step("Schema validation"):
-            api_client_without_logout.validate_schema(response=response, model=LogoutResponse)
+            validate_schema(actual_schema=response, expected_schema=LogoutResponse)
 
     @allure.title("User logout without user token")
     def test_logout_without_user_token(self, api_client):
@@ -35,7 +36,7 @@ class TestLogout:
         with allure.step("Status code 200"):
             assert response.status_code == StatusCodes.code_200
         with allure.step("Schema validation"):
-            api_client.validate_schema(response=response, model=LogoutWithoutUserTokenResponse)
+            validate_schema(actual_schema=response, expected_schema=LogoutWithoutUserTokenResponse)
 
     @allure.title("User logout without Authorization header")
     def test_logout_without_auth_header(self, api_client, user):
@@ -47,5 +48,5 @@ class TestLogout:
         )
         with allure.step("Status code 401"):
             assert response.status_code == StatusCodes.code_401
-        with allure.step("Schema validation"):
-            assert response.text == Messages.RAW_401_MESSAGE
+        with allure.step("Response body validation"):
+            validate_response_body(actual_response=response.text, expected_response=Messages.RAW_401_MESSAGE)

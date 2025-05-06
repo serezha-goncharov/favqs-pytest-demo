@@ -1,20 +1,13 @@
 import requests
+
 from copy import deepcopy
-from pydantic import ValidationError
 from requests import Response
 from settings import settings
-
-from api.models import BaseSchema
-
 from api.consts import HttpMethods, Endpoints
 
 
-class SchemaValidationError(AssertionError):
-    """Кастомное исключение для ошибок валидации"""
-
-
 class BaseApiClient:
-    def __init__(self, base_url):
+    def __init__(self, base_url: str):
         self.base_url = base_url
         self.session = requests.Session()
         self.session.headers.update(
@@ -37,13 +30,6 @@ class BaseApiClient:
             # Восстанавливаем оригинальные заголовки
             self.session.headers.clear()
             self.session.headers.update(original_headers)
-
-    @staticmethod
-    def validate_schema(response, model: type[BaseSchema]) -> BaseSchema:
-        try:
-            return model.model_validate(response.json())
-        except ValidationError as error:
-            raise SchemaValidationError(f"Schema validation failed\n{error}")
 
 
 class SessionMethods(BaseApiClient):

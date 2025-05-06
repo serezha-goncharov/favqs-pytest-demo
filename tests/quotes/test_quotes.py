@@ -6,6 +6,7 @@ from tests.quotes.quotes_models import QuotesResponse, Quote
 from faker import Faker
 
 from utils.json_helper import format_json
+from utils.validation_helper import validate_schema, validate_response_body
 
 fake = Faker()
 
@@ -28,7 +29,7 @@ class TestGetQuotes:
         with allure.step("Status code 200"):
             assert response.status_code == StatusCodes.code_200
         with allure.step("Schema validation"):
-            auth_api_client.validate_schema(response=response, model=QuotesResponse)
+            validate_schema(actual_schema=response, expected_schema=QuotesResponse)
 
     @allure.title("Get quotes without Authorization header")
     def test_get_quotes_without_auth_header(self, api_client):
@@ -40,8 +41,8 @@ class TestGetQuotes:
         )
         with allure.step("Status code 401"):
             assert response.status_code == StatusCodes.code_401
-        with allure.step("Schema validation"):
-            assert response.text == Messages.RAW_401_MESSAGE
+        with allure.step("Response body validation"):
+            validate_response_body(actual_response=response.text, expected_response=Messages.RAW_401_MESSAGE)
 
 
 @allure.story("POST /quotes")
@@ -57,7 +58,7 @@ class TestPostQuotes:
         with allure.step("Status code 200"):
             assert response.status_code == StatusCodes.code_200
         with allure.step("Schema validation"):
-            auth_api_client.validate_schema(response=response, model=Quote)
+            validate_schema(actual_schema=response, expected_schema=Quote)
 
     @allure.title("Create quotes for user without Authorization header")
     def test_create_quote_without_auth_header(self, auth_api_client):
@@ -69,5 +70,5 @@ class TestPostQuotes:
         )
         with allure.step("Status code 401"):
             assert response.status_code == StatusCodes.code_401
-        with allure.step("Schema validation"):
-            assert response.text == Messages.RAW_401_MESSAGE
+        with allure.step("Response body validation"):
+            validate_response_body(actual_response=response.text, expected_response=Messages.RAW_401_MESSAGE)

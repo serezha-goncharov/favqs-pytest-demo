@@ -5,6 +5,7 @@ from faker import Faker
 from api.consts import StatusCodes, Messages
 from tests.users.user_models import GetUserResponse, GetNonExistentUserResponse, CreateUserResponse
 from utils.json_helper import format_json
+from utils.validation_helper import validate_response_body, validate_schema
 
 fake = Faker()
 
@@ -22,7 +23,7 @@ class TestGetUsers:
         with allure.step("Status code 200"):
             assert response.status_code == StatusCodes.code_200
         with allure.step("Schema validation"):
-            auth_api_client.validate_schema(response=response, model=GetUserResponse)
+            validate_schema(actual_schema=response, expected_schema=GetUserResponse)
 
     @allure.title("Get non-existent user")
     def test_get_non_existent_user(self, auth_api_client):
@@ -35,7 +36,7 @@ class TestGetUsers:
         with allure.step("Status code 404"):
             assert response.status_code == StatusCodes.code_404
         with allure.step("Schema validation"):
-            auth_api_client.validate_schema(response=response, model=GetNonExistentUserResponse)
+            validate_schema(actual_schema=response, expected_schema=GetNonExistentUserResponse)
 
     @allure.title("Get user without Authorization header")
     def test_get_user_without_auth_header(self, auth_api_client, user):
@@ -47,8 +48,8 @@ class TestGetUsers:
         )
         with allure.step("Status code 401"):
             assert response.status_code == StatusCodes.code_401
-        with allure.step("Schema validation"):
-            assert response.text == Messages.RAW_401_MESSAGE
+        with allure.step("Response body validation"):
+            validate_response_body(actual_response=response.text, expected_response=Messages.RAW_401_MESSAGE)
 
 
 @allure.story("POST /users")
@@ -64,7 +65,7 @@ class TestCreateUsers:
         with allure.step("Status code 200"):
             assert response.status_code == StatusCodes.code_200
         with allure.step("Schema validation"):
-            api_client_without_login.validate_schema(response=response, model=CreateUserResponse)
+            validate_schema(actual_schema=response, expected_schema=CreateUserResponse)
 
     @allure.title("Create user without Authorization header")
     def test_create_user_without_auth_header(self, api_client_without_login):
@@ -81,5 +82,5 @@ class TestCreateUsers:
         )
         with allure.step("Status code 401"):
             assert response.status_code == StatusCodes.code_401
-        with allure.step("Schema validation"):
-            assert response.text == Messages.RAW_401_MESSAGE
+        with allure.step("Response body validation"):
+            validate_response_body(actual_response=response.text, expected_response=Messages.RAW_401_MESSAGE)
