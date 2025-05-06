@@ -1,5 +1,6 @@
 import os
 
+import platform
 import pytest
 from faker import Faker
 
@@ -7,6 +8,7 @@ from api.client import FavqsApiClient
 from settings import settings
 from tests.users.user_models import CreateUserRequest
 
+PYTHON_VERSION = platform.python_version()
 fake = Faker()
 
 
@@ -31,6 +33,7 @@ def setup_environment_report(base_url: str) -> None:
     with open(env_file, "w", encoding="utf-8") as f:
         f.write(f"base_url={base_url}\n")
         f.write("api_version=v2")
+        f.write(f"python_version={PYTHON_VERSION}")
 
 
 @pytest.fixture(scope="session")
