@@ -16,7 +16,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--base-url",
         action="store",
-        help="Переопределение базового URL из конфига",
+        help="Overriding the base URL from configuration",
     )
 
 
