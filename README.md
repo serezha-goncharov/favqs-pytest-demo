@@ -4,8 +4,10 @@ This repository represents basic API tests built with pytest and Allure of FavQs
 https://favqs.com/api
 
 
-Disclaimer: The tests do not cover all the endpoints and all test-cases.
+Disclaimer: 
+- The tests do not cover all the endpoints and all test-cases.
 It is designed to develop and improve automation testing skills with Pytest and Allure
+- Required `Python 3.12`
 
 ## .env
 
