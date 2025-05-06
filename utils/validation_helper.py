@@ -27,4 +27,4 @@ def validate_response_body(actual_response: str, expected_response: str) -> None
     try:
         assert expected_response == actual_response
     except ValidationError as error:
-        raise ResponseBodyValidationError(f"Schema validation failed\n{error}")
+        raise ResponseBodyValidationError(f"Response body validation failed\n{error}")
