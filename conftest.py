@@ -1,6 +1,9 @@
 import os
 
 import platform
+from contextlib import contextmanager
+from typing import Optional
+
 import pytest
 from faker import Faker
 
@@ -49,20 +52,38 @@ def api_client(base_url: str) -> FavqsApiClient:
     return FavqsApiClient(base_url=base_url)
 
 
+@contextmanager
+def managed_api_client(
+    api_client: FavqsApiClient,
+    user: Optional[UserModel] = None,
+    should_login: bool = False,
+    should_logout: bool = False,
+) -> FavqsApiClient:
+
+    if should_login:
+        if not user:
+            raise ValueError("User object required for login")
+        api_client.login(login=user.login, password=user.password)
+    try:
+        yield api_client
+    finally:
+        if should_logout:
+            api_client.logout()
+
+
 @pytest.fixture(scope="class")
-def auth_api_client(api_client: FavqsApiClient, user) -> FavqsApiClient:
-    api_client.login(login=user.login, password=user.password)
-    yield api_client
-    api_client.logout()
+def auth_api_client(api_client: FavqsApiClient, user: UserModel) -> FavqsApiClient:
+    with managed_api_client(api_client, user, should_login=True, should_logout=True) as client:
+        yield client
 
 
 @pytest.fixture(scope="module")
 def api_client_without_login(api_client: FavqsApiClient) -> FavqsApiClient:
-    yield api_client
-    api_client.logout()
+    with managed_api_client(api_client, should_logout=True) as client:
+        yield client
 
 
 @pytest.fixture(scope="function")
-def api_client_without_logout(api_client: FavqsApiClient, user) -> FavqsApiClient:
-    api_client.login(login=user.login, password=user.password)
-    yield api_client
+def api_client_without_logout(api_client: FavqsApiClient, user: UserModel) -> FavqsApiClient:
+    with managed_api_client(api_client, user, should_login=True) as client:
+        yield client
