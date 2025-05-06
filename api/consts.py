@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, StrEnum, IntEnum, unique
 
 
-class Messages(str, Enum):
+@unique
+class Messages(StrEnum):
     RAW_401_MESSAGE = "HTTP Token: Access denied.\n"
     LOGOUT_MESSAGE = "User logged out."
 
@@ -13,6 +14,7 @@ class Error:
     message: str
 
 
+@unique
 class Errors(Enum):
     INVALID_LOGIN_OR_PASSWORD = Error(code=21, message="Invalid login or password.")
     USER_SESSION_NOT_FOUND = Error(code=20, message="User session not found.")
@@ -27,19 +29,22 @@ class Errors(Enum):
         return self.value.message
 
 
-class StatusCodes(int, Enum):
+@unique
+class StatusCodes(IntEnum):
     code_200 = 200
     code_401 = 401
     code_404 = 404
 
 
-class HttpMethods(str, Enum):
+@unique
+class HttpMethods(StrEnum):
     GET = "GET"
     POST = "POST"
     DELETE = "DELETE"
 
 
-class Endpoints(str, Enum):
-    session: str = "session"
-    quotes: str = "quotes"
-    users: str = "users"
+@unique
+class Endpoints(StrEnum):
+    session = "session"
+    quotes = "quotes"
+    users = "users"
