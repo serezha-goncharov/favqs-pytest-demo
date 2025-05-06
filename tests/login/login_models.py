@@ -10,7 +10,7 @@ class LoginResponse(BaseSchema):
     email: EmailStr
 
 
-class LoginWithWrongCredsResponse(BaseSchema):
+class WrongCredsResponse(BaseSchema):
     error_code: int
     message: str
 

@@ -28,7 +28,7 @@ class Quote(BaseSchema):
     user_details: UserDetails
 
 
-class QuotesResponse(BaseSchema):
+class Quotes(BaseSchema):
     page: int = Field(ge=1)
     last_page: bool
     quotes: List[Quote]

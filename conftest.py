@@ -6,7 +6,7 @@ from faker import Faker
 
 from api.client import FavqsApiClient
 from settings import settings
-from tests.users.user_models import CreateUserRequest
+from tests.users.user_models import UserModel
 
 PYTHON_VERSION = platform.python_version()
 fake = Faker()
@@ -37,8 +37,8 @@ def setup_environment_report(base_url: str) -> None:
 
 
 @pytest.fixture(scope="session")
-def user(api_client) -> CreateUserRequest:
-    user_model = CreateUserRequest(login=fake.user_name(), email=fake.email(), password=fake.password())
+def user(api_client) -> UserModel:
+    user_model = UserModel(login=fake.user_name(), email=fake.email(), password=fake.password())
     api_client.create_user(login=user_model.login, email=user_model.email, password=user_model.password)
     api_client.logout()
     return user_model

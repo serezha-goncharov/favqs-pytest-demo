@@ -3,7 +3,7 @@ import allure
 from faker import Faker
 
 from api.consts import StatusCodes, Messages
-from tests.login.login_models import LoginResponse, LoginWithWrongCredsResponse
+from tests.login.login_models import LoginResponse, WrongCredsResponse
 from utils.json_helper import format_json
 from utils.validation_helper import validate_schema, validate_response_body, validate_status_code
 
@@ -48,7 +48,7 @@ class TestLogin:
         with allure.step("Status code 200"):
             validate_status_code(actual_status_code=response.status_code, expected_status_code=StatusCodes.code_200)
         with allure.step("Schema validation"):
-            validate_schema(actual_schema=response, expected_schema=LoginWithWrongCredsResponse)
+            validate_schema(actual_schema=response, expected_schema=WrongCredsResponse)
 
     @allure.title("User login without Authorization header")
     def test_login_without_auth_header(self, api_client, user):

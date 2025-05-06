@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from api.consts import StatusCodes, Messages
-from tests.quotes.quotes_models import QuotesResponse, Quote
+from tests.quotes.quotes_models import Quotes, Quote
 from faker import Faker
 
 from utils.json_helper import format_json
@@ -34,7 +34,7 @@ class TestGetQuotes:
         with allure.step("Status code 200"):
             validate_status_code(actual_status_code=response.status_code, expected_status_code=StatusCodes.code_200)
         with allure.step("Schema validation"):
-            validate_schema(actual_schema=response, expected_schema=QuotesResponse)
+            validate_schema(actual_schema=response, expected_schema=Quotes)
 
     @allure.title("Get quotes without Authorization header")
     def test_get_quotes_without_auth_header(self, api_client):

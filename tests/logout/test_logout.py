@@ -3,7 +3,7 @@ import allure
 from faker import Faker
 
 from api.consts import StatusCodes, Messages
-from tests.logout.logout_models import LogoutResponse, LogoutWithoutUserTokenResponse
+from tests.logout.logout_models import LogoutResponse, MissedUserTokenResponse
 from utils.json_helper import format_json
 from utils.validation_helper import validate_schema, validate_response_body, validate_status_code
 
@@ -48,7 +48,7 @@ class TestLogout:
         with allure.step("Status code 200"):
             validate_status_code(actual_status_code=response.status_code, expected_status_code=StatusCodes.code_200)
         with allure.step("Schema validation"):
-            validate_schema(actual_schema=response, expected_schema=LogoutWithoutUserTokenResponse)
+            validate_schema(actual_schema=response, expected_schema=MissedUserTokenResponse)
 
     @allure.title("User logout without Authorization header")
     def test_logout_without_auth_header(self, api_client, user):

@@ -13,7 +13,7 @@ class AccountDetails(BaseSchema):
     pro_expiration: Optional[datetime] = None
 
 
-class GetUserResponse(BaseSchema):
+class LoggedInUser(BaseSchema):
     login: str
     pic_url: HttpUrl
     public_favorites_count: int
@@ -23,13 +23,13 @@ class GetUserResponse(BaseSchema):
     account_details: Optional[AccountDetails] = None
 
 
-class CreateUserRequest(BaseSchema):
+class UserModel(BaseSchema):
     login: str = Field(min_length=1, max_length=20)
     email: EmailStr
     password: str = Field(min_length=5, max_length=120)
 
 
-class GetNonExistentUserResponse(BaseSchema):
+class NonExistentUser(BaseSchema):
     error_code: int
     message: str
 
@@ -46,6 +46,6 @@ class GetNonExistentUserResponse(BaseSchema):
         return message
 
 
-class CreateUserResponse(BaseSchema):
+class CreatedUser(BaseSchema):
     user_token: str = Field(alias="User-Token")
     login: str

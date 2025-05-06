@@ -14,7 +14,7 @@ class LogoutResponse(BaseSchema):
         return message
 
 
-class LogoutWithoutUserTokenResponse(BaseSchema):
+class MissedUserTokenResponse(BaseSchema):
     error_code: int
     message: str
 

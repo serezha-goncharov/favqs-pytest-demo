@@ -3,7 +3,7 @@ import allure
 from faker import Faker
 
 from api.consts import StatusCodes, Messages
-from tests.users.user_models import GetUserResponse, GetNonExistentUserResponse, CreateUserResponse
+from tests.users.user_models import LoggedInUser, NonExistentUser, CreatedUser
 from utils.json_helper import format_json
 from utils.validation_helper import validate_response_body, validate_schema, validate_status_code
 
@@ -29,7 +29,7 @@ class TestGetUsers:
         with allure.step("Status code 200"):
             validate_status_code(actual_status_code=response.status_code, expected_status_code=StatusCodes.code_200)
         with allure.step("Schema validation"):
-            validate_schema(actual_schema=response, expected_schema=GetUserResponse)
+            validate_schema(actual_schema=response, expected_schema=LoggedInUser)
 
     @allure.title("Get non-existent user")
     def test_get_non_existent_user(self, auth_api_client):
@@ -48,7 +48,7 @@ class TestGetUsers:
         with allure.step("Status code 404"):
             validate_status_code(actual_status_code=response.status_code, expected_status_code=StatusCodes.code_404)
         with allure.step("Schema validation"):
-            validate_schema(actual_schema=response, expected_schema=GetNonExistentUserResponse)
+            validate_schema(actual_schema=response, expected_schema=NonExistentUser)
 
     @allure.title("Get user without Authorization header")
     def test_get_user_without_auth_header(self, auth_api_client, user):
@@ -89,7 +89,7 @@ class TestCreateUsers:
         with allure.step("Status code 200"):
             validate_status_code(actual_status_code=response.status_code, expected_status_code=StatusCodes.code_200)
         with allure.step("Schema validation"):
-            validate_schema(actual_schema=response, expected_schema=CreateUserResponse)
+            validate_schema(actual_schema=response, expected_schema=CreatedUser)
 
     @allure.title("Create user without Authorization header")
     def test_create_user_without_auth_header(self, api_client_without_login):
