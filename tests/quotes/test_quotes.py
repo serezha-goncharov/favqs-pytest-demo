@@ -2,7 +2,7 @@ import allure
 import pytest
 
 from api.consts import StatusCodes, Messages
-from tests.qoutes.quotes_models import QuotesResponse, Quote
+from tests.quotes.quotes_models import QuotesResponse, Quote
 from faker import Faker
 
 from utils.json import format_json
