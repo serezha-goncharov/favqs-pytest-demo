@@ -10,8 +10,14 @@ class SchemaValidationError(AssertionError):
     pass
 
 
-class ResponseBodyValidationError(AssertionError):
+class ResponseBodyError(AssertionError):
     """Custom exception for response body validation errors"""
+
+    pass
+
+
+class StatusCodeError(AssertionError):
+    """Custom exception for status code validation errors"""
 
     pass
 
@@ -25,6 +31,13 @@ def validate_schema(actual_schema: Response, expected_schema: type[BaseSchema]) 
 
 def validate_response_body(actual_response: str, expected_response: str) -> None:
     try:
-        assert expected_response == actual_response
-    except ValidationError as error:
-        raise ResponseBodyValidationError(f"Response body validation failed\n{error}")
+        assert actual_response == expected_response
+    except AssertionError:
+        raise ResponseBodyError(f"Response body validation failed: expected {expected_response}, got {actual_response}")
+
+
+def validate_status_code(actual_status_code: int, expected_status_code: int) -> None:
+    try:
+        assert actual_status_code == expected_status_code
+    except AssertionError:
+        raise StatusCodeError(f"Status code validation failed: expected {expected_status_code}, got {actual_status_code}")

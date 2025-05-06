@@ -5,7 +5,7 @@ from faker import Faker
 from api.consts import StatusCodes, Messages
 from tests.login.login_models import LoginResponse, LoginWithWrongCredsResponse
 from utils.json_helper import format_json
-from utils.validation_helper import validate_schema, validate_response_body
+from utils.validation_helper import validate_schema, validate_response_body, validate_status_code
 
 fake = Faker()
 
@@ -21,7 +21,7 @@ class TestLogin:
             attachment_type=allure.attachment_type.JSON,
         )
         with allure.step("Status code 200"):
-            assert response.status_code == StatusCodes.code_200
+            validate_status_code(actual_status_code=response.status_code, expected_status_code=StatusCodes.code_200)
         with allure.step("Schema validation"):
             validate_schema(actual_schema=response, expected_schema=LoginResponse)
 
@@ -34,7 +34,7 @@ class TestLogin:
             attachment_type=allure.attachment_type.JSON,
         )
         with allure.step("Status code 200"):
-            assert response.status_code == StatusCodes.code_200
+            validate_status_code(actual_status_code=response.status_code, expected_status_code=StatusCodes.code_200)
         with allure.step("Schema validation"):
             validate_schema(actual_schema=response, expected_schema=LoginWithWrongCredsResponse)
 
@@ -47,6 +47,6 @@ class TestLogin:
             attachment_type=allure.attachment_type.TEXT,
         )
         with allure.step("Status code 401"):
-            assert response.status_code == StatusCodes.code_401
+            validate_status_code(actual_status_code=response.status_code, expected_status_code=StatusCodes.code_401)
         with allure.step("Response body validation"):
             validate_response_body(actual_response=response.text, expected_response=Messages.RAW_401_MESSAGE)
