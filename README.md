@@ -7,23 +7,27 @@ https://favqs.com/api
 Disclaimer: The tests do not cover all the endpoints and all test-cases.
 It is designed to develop and improve automation testing skills with Pytest and Allure
 
+## .env
 
-Install
+- `API_KEY` - you can get your API key here --> https://favqs.com/api_keys
+- `BASE_URL` - generally it is same for everyone, according to documentation, which is `https://favqs.com/api/`
+
+## Install
 ```commandline
-pip install
+pip install -r requirements.txt
 ```
 
-Run tests
+## Run tests
 ```commandline
 pytest tests/ --base-url "https://favqs.com/api"
 ```
 
-Generate HTML report
+## Generate HTML report
 ```commandline
 allure generate reports/json -o reports/html --clean
 ```
 
-Open HTML report
+## Open HTML report
 ```commandline
 allure open reports/html
 ```
